@@ -43,6 +43,7 @@ export type Config<Item, ItemMsg, Err> = {
     onPageChange: (page: number) => void,
   ) => ReactNode;
   limit: number;
+  scrollContainerId?: string;
 };
 
 export type Model<Item, Err> = {

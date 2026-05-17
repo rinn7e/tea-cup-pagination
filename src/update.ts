@@ -25,13 +25,25 @@ import { Cmd } from "tea-cup-fp";
 
 import { type Config, type Model, type Msg } from "./type";
 
-export const scrollToTopCmd = (): Cmd<{ _tag: "NoOp" }> =>
-  cmdSucceed(() =>
+export const scrollToTopCmd = (
+  scrollContainerId?: string,
+): Cmd<{ _tag: "NoOp" }> =>
+  cmdSucceed(() => {
+    if (scrollContainerId) {
+      const container = document.getElementById(scrollContainerId);
+      if (container) {
+        container.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+        return;
+      }
+    }
     window.scrollTo({
       top: 0,
       behavior: "smooth",
-    }),
-  );
+    });
+  });
 
 export const init = <Item, ItemMsg, Err>(
   config: Config<Item, ItemMsg, Err>,
@@ -62,7 +74,10 @@ export const update =
               ...model,
               page: msg.page,
             },
-            Cmd.batch([fetchCmd(config, msg.page), scrollToTopCmd()]),
+            Cmd.batch([
+              fetchCmd(config, msg.page),
+              scrollToTopCmd(config.scrollContainerId),
+            ]),
           ];
         }
       }
