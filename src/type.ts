@@ -37,6 +37,11 @@ export type Config<Item, ItemMsg, Err> = {
     items: RD.RemoteData<Err, Item[]>,
     itemDispatch: (item: Item, msg: ItemMsg) => void,
   ) => ReactNode;
+  renderPagination: (
+    currentPage: number,
+    pageAmount: number,
+    onPageChange: (page: number) => void,
+  ) => ReactNode;
   limit: number;
 };
 
